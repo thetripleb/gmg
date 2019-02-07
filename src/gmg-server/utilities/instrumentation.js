@@ -29,7 +29,7 @@ const metrics = {
         help: 'number of requests made to change grill temp'
     }),
     food_temp_change_countere: new client.Counter({
-        name: 'gmg_server_food_temp_change_countere',
+        name: 'gmg_server_food_temp_change_counter',
         help: 'number of requests made to change food temp'
     }),
     current_grill_temp: new client.Gauge({
