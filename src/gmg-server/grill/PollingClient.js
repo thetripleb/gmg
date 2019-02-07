@@ -1,6 +1,7 @@
 const config = require('config')
 const PollingManager = require('../utilities/PollingManager')
 const EventEmitter = require('events')
+const { metrics } = require('../utilities/instrumentation')
 
 class PollingClient extends EventEmitter {
     constructor({ client, logger, options = config.get('status') }) {
@@ -22,6 +23,11 @@ class PollingClient extends EventEmitter {
                 // Get current grill status
                 this._logger('Fetching grill status')
                 const status = await this._client.getGrillStatus()
+                metrics.current_food_temp.set(status.currentFoodTemp)
+                metrics.desired_food_temp.set(status.desiredFoodTemp)
+                metrics.current_grill_temp.set(status.currentGrillTemp)
+                metrics.desired_grill_temp.set(status.desiredGrillTemp)
+
                 this.emit('status', status)
             },
             context: this
